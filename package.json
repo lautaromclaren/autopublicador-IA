@@ -1,0 +1,20 @@
+{
+  "name": "autopublicador-ia",
+  "version": "1.0.0",
+  "description": "Proyecto SaaS para autopublicar contenido optimizado con IA en grupos y páginas de Facebook.\r git add README.md",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lautaromclaren/autopublicador-IA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lautaromclaren/autopublicador-IA/issues"
+  },
+  "homepage": "https://github.com/lautaromclaren/autopublicador-IA#readme"
+}
