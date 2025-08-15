@@ -1,15 +1,18 @@
 // src/App.jsx
 
-import Header from './components/Header.jsx'; // 1. Importamos el componente
+import Header from './components/Header.jsx';
+import GeneratorForm from './components/GeneratorForm.jsx';
 
 function App() {
   return (
     <div>
-      <Header /> {/* 2. Usamos nuestro componente como si fuera una etiqueta HTML */}
+      <Header />
       
       <main style={{ padding: '2rem' }}>
         <h1>Panel de Control</h1>
         <p>Bienvenido a la herramienta que potenciará tus redes sociales.</p>
+        
+        <GeneratorForm />
       </main>
     </div>
   )
