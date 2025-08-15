@@ -1,3 +1,5 @@
+// Carga las variables de entorno del archivo .env
+require('dotenv').config();
 // Carga las variables de entorno (la clave API)
 require('dotenv').config();
 
