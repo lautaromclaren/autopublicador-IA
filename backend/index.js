@@ -1,23 +1,38 @@
-// Carga las variables de entorno del archivo .env
-require('dotenv').config();
-// Carga las variables de entorno (la clave API)
-require('dotenv').config();
+// backend/index.js
 
-// Importaciones necesarias
+// Carga las variables de entorno del archivo .env que está en la carpeta raíz
+require('dotenv').config({ path: '../.env' });
+
+// =============================================================
+//  1. IMPORTACIONES DE LIBRERÍAS
+// =============================================================
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const OpenAI = require('openai');
 
-// Configuración de OpenAI
-const openai = new OpenAI();
+// =============================================================
+//  2. CONEXIÓN A LA BASE DE DATOS MONGODB ATLAS
+// =============================================================
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conexión a MongoDB Atlas exitosa.'))
+  .catch(err => console.error('Error al conectar a MongoDB:', err));
 
-// Configuración de Express
+// =============================================================
+//  3. CONFIGURACIÓN DE LA APLICACIÓN EXPRESS
+// =============================================================
+const openai = new OpenAI();
 const app = express();
 app.use(cors());
 app.use(express.json());
 const PORT = 3001;
 
-// --- ENDPOINTS DE LA API ---
+// =============================================================
+//  4. ENDPOINTS DE LA API (TUS RUTAS)
+// =============================================================
+
+// <-- ¡AQUÍ ESTÁ LA NUEVA LÍNEA! Le decimos a Express que use nuestras rutas de autenticación
+app.use('/api/auth', require('./routes/auth'));
 
 // Endpoint de estado
 app.get('/api/status', (req, res) => {
@@ -27,9 +42,7 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// =============================================================
-//  NUESTRO ENDPOINT DE IA MEJORADO PARA GENERAR VARIACIONES
-// =============================================================
+// Endpoint de IA para generar variaciones
 app.post('/api/generate', async (req, res) => {
   const { idea } = req.body;
   console.log(`Petición recibida. Generando 3 variaciones para la idea: "${idea}"`);
@@ -44,26 +57,18 @@ app.post('/api/generate', async (req, res) => {
         },
         { 
           role: "user", 
-          // <-- 1. ¡INSTRUCCIÓN MODIFICADA! Ahora pedimos 3 variaciones con un separador específico.
           content: `Genera 3 variaciones únicas y distintas para una publicación de Facebook basada en la siguiente idea: "${idea}". Separa cada variación con "|||".` 
         }
       ],
     });
 
-    // Extraemos el bloque de texto completo generado por la IA
     const rawContent = completion.choices[0].message.content;
-
-    // <-- 2. ¡NUEVO PROCESAMIENTO! Dividimos el texto en un array usando el separador.
     const generatedVariations = rawContent.split('|||').map(text => text.trim());
-
     console.log("Variaciones generadas por la IA con éxito:", generatedVariations);
-
-    // <-- 3. ¡RESPUESTA MODIFICADA! Enviamos el array de variaciones al frontend.
     res.status(200).json({
       message: 'Contenido generado con éxito.',
-      generatedVariations: generatedVariations // Ahora es una lista
+      generatedVariations: generatedVariations
     });
-
   } catch (error) {
     console.error("Error al llamar a la API de OpenAI:", error);
     res.status(500).json({ 
@@ -73,7 +78,9 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-// Iniciar el servidor
+// =============================================================
+//  5. INICIAR EL SERVIDOR
+// =============================================================
 app.listen(PORT, () => {
   console.log(`Servidor corriendo exitosamente en el puerto http://localhost:${PORT}`);
 });
