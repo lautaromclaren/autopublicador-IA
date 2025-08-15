@@ -4,10 +4,9 @@ require('dotenv').config();
 // Importaciones necesarias
 const express = require('express');
 const cors = require('cors');
-const OpenAI = require('openai'); // <-- 1. IMPORTAMOS LA LIBRERÍA DE OPENAI
+const OpenAI = require('openai');
 
-// 2. CONFIGURACIÓN DE OPENAI
-// Creamos una nueva instancia, la librería automáticamente buscará la clave en las variables de entorno (process.env.OPENAI_API_KEY)
+// Configuración de OpenAI
 const openai = new OpenAI();
 
 // Configuración de Express
@@ -27,18 +26,15 @@ app.get('/api/status', (req, res) => {
 });
 
 // =============================================================
-//  NUESTRO ENDPOINT DE IA MEJORADO
+//  NUESTRO ENDPOINT DE IA MEJORADO PARA GENERAR VARIACIONES
 // =============================================================
 app.post('/api/generate', async (req, res) => {
-  // Extraemos la idea del usuario
   const { idea } = req.body;
-
-  console.log(`Petición recibida. Generando texto para la idea: "${idea}"`);
+  console.log(`Petición recibida. Generando 3 variaciones para la idea: "${idea}"`);
 
   try {
-    // 3. LLAMADA A LA API DE OPENAI
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // El modelo que usaremos. Es rápido y económico.
+      model: "gpt-3.5-turbo",
       messages: [
         { 
           role: "system", 
@@ -46,20 +42,24 @@ app.post('/api/generate', async (req, res) => {
         },
         { 
           role: "user", 
-          content: `Genera un texto para una publicación de Facebook basado en la siguiente idea: "${idea}"` 
+          // <-- 1. ¡INSTRUCCIÓN MODIFICADA! Ahora pedimos 3 variaciones con un separador específico.
+          content: `Genera 3 variaciones únicas y distintas para una publicación de Facebook basada en la siguiente idea: "${idea}". Separa cada variación con "|||".` 
         }
       ],
     });
 
-    // Extraemos el texto generado por la IA de la respuesta
-    const generatedText = completion.choices[0].message.content;
+    // Extraemos el bloque de texto completo generado por la IA
+    const rawContent = completion.choices[0].message.content;
 
-    console.log("Texto generado por la IA con éxito.");
+    // <-- 2. ¡NUEVO PROCESAMIENTO! Dividimos el texto en un array usando el separador.
+    const generatedVariations = rawContent.split('|||').map(text => text.trim());
 
-    // 4. ENVIAMOS EL TEXTO GENERADO DE VUELTA AL FRONTEND
+    console.log("Variaciones generadas por la IA con éxito:", generatedVariations);
+
+    // <-- 3. ¡RESPUESTA MODIFICADA! Enviamos el array de variaciones al frontend.
     res.status(200).json({
       message: 'Contenido generado con éxito.',
-      generatedContent: generatedText
+      generatedVariations: generatedVariations // Ahora es una lista
     });
 
   } catch (error) {

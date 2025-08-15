@@ -1,28 +1,27 @@
-// src/components/GeneratorForm.jsx
+// VERSIÓN CORRECTA Y VERIFICADA - src/components/GeneratorForm.jsx
 
 import { useState } from 'react';
 import axios from 'axios';
-import AIResponse from './AIResponse.jsx'; // <-- 1. IMPORTAMOS EL NUEVO COMPONENTE
+import AIResponse from './AIResponse.jsx';
 
 function GeneratorForm() {
   const [idea, setIdea] = useState('');
-  const [generatedContent, setGeneratedContent] = useState(''); // Estado para el texto de la IA
-  const [error, setError] = useState(''); // Estado para los errores
+  const [variations, setVariations] = useState([]); 
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    setGeneratedContent('');
+    setVariations([]);
     setError('');
 
     try {
       const result = await axios.post('http://localhost:3001/api/generate', { idea });
-      // Guardamos solo el contenido generado
-      setGeneratedContent(result.data.generatedContent);
+      setVariations(result.data.generatedVariations);
     } catch (error) {
       console.error('Error al enviar la idea:', error);
-      setError('Ocurrió un error al generar el contenido. Por favor, revisa tu conexión o saldo de la API.');
+      setError('Ocurrió un error al generar el contenido.');
     } finally {
       setIsLoading(false);
     }
@@ -31,7 +30,6 @@ function GeneratorForm() {
   return (
     <div style={{ border: '1px solid #ccc', padding: '2rem', borderRadius: '8px', marginTop: '2rem' }}>
       <form onSubmit={handleSubmit}>
-        {/* ... (el label, textarea y button se mantienen igual) ... */}
         <label htmlFor="idea-input" style={{ display: 'block', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Introduce tu idea para la publicación:
         </label>
@@ -47,9 +45,8 @@ function GeneratorForm() {
         </button>
       </form>
 
-      {/* 2. USAMOS NUESTRO NUEVO COMPONENTE PARA MOSTRAR LA RESPUESTA O EL ERROR */}
       {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
-      <AIResponse content={generatedContent} isLoading={isLoading} />
+      <AIResponse variations={variations} isLoading={isLoading} />
     </div>
   );
 }
