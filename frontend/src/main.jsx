@@ -1,32 +1,41 @@
-// src/main.jsx
+// src/main.jsx - VERSIÓN FINAL Y CORREGIDA
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // 1. Importamos las herramientas de enrutamiento
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx'; 
 
 import App from './App.jsx';
-import LoginPage from './pages/LoginPage.jsx';     // 2. Importamos nuestras nuevas páginas
-import RegisterPage from './pages/RegisterPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx'; // <-- ¡LA RUTA YA ESTÁ CORREGIDA!
 
-// 3. CREAMOS NUESTRO ENRUTADOR
 const router = createBrowserRouter([
   {
-    path: "/", // Cuando el usuario visite la ruta raíz...
-    element: <App />, // ...mostraremos el componente App (nuestro dashboard principal).
+    path: "/",
+    element: <ProtectedRoute />,
+    children: [
+      { 
+        path: "/", 
+        element: <App />
+      }
+    ]
   },
   {
-    path: "/login", // Cuando el usuario visite /login...
-    element: <LoginPage />, // ...mostraremos el componente LoginPage.
+    path: "/login",
+    element: <LoginPage />,
   },
   {
-    path: "/register", // Cuando el usuario visite /register...
-    element: <RegisterPage />, // ...mostraremos el componente RegisterPage.
+    path: "/register",
+    element: <RegisterPage />,
   },
 ]);
 
-// 4. LE DECIMOS A REACT QUE USE NUESTRO ENRUTADOR
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 );
