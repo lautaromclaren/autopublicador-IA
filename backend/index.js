@@ -1,4 +1,4 @@
-// backend/index.js
+// backend/index.js - VERSIÓN LISTA PARA DESPLIEGUE
 
 require('dotenv').config({ path: '../.env' });
 
@@ -16,18 +16,24 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = 3001;
 
 // --- RUTAS DE LA API ---
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/generations', require('./routes/generations')); // <-- ¡AQUÍ ENCHUFAMOS LAS NUEVAS RUTAS!
+app.use('/api/generations', require('./routes/generations'));
 
-// Ruta de estado simple (la podemos dejar)
+// Ruta de estado simple
 app.get('/api/status', (req, res) => {
   res.json({ status: 'ok', message: 'El backend está conectado.' });
 });
 
 // --- INICIAR SERVIDOR ---
+
+// ¡CAMBIO CLAVE PARA EL DESPLIEGUE!
+// Render nos dará un puerto en process.env.PORT. 
+// Si no existe (porque estamos en local), usaremos el 3001 como respaldo.
+const PORT = process.env.PORT || 3001; 
+
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo exitosamente en el puerto http://localhost:${PORT}`);
+  // Modificamos el mensaje para que nos diga en qué puerto está corriendo
+  console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`); 
 });
