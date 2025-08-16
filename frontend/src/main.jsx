@@ -1,4 +1,4 @@
-// src/main.jsx - VERSIÓN FINAL Y CORREGIDA
+// src/main.jsx - VERSIÓN FINAL CON HISTORIAL
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -9,17 +9,16 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
 import App from './App.jsx';
 import LoginPage from './pages/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage.jsx'; // <-- ¡LA RUTA YA ESTÁ CORREGIDA!
+import RegisterPage from './pages/RegisterPage.jsx';
+import HistoryPage from './pages/HistoryPage.jsx'; // <-- 1. IMPORTAMOS LA NUEVA PÁGINA
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedRoute />,
     children: [
-      { 
-        path: "/", 
-        element: <App />
-      }
+      { path: "/", element: <App /> },
+      { path: "/history", element: <HistoryPage /> } // <-- 2. AÑADIMOS LA RUTA PROTEGIDA
     ]
   },
   {

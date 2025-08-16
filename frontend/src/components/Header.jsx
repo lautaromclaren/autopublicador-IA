@@ -1,16 +1,15 @@
 // src/components/Header.jsx
 
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // <-- Usamos nuestro nuevo hook
+import { useAuth } from '../context/AuthContext';
 
 function Header() {
-  // Ahora también obtenemos el 'user' y la función 'logout' del contexto
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // Llama a la función logout del contexto
-    navigate('/login'); // Redirige al usuario
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -30,13 +29,19 @@ function Header() {
         {isAuthenticated ? (
           <>
             {/* Si el usuario existe, mostramos su email */}
-            {user && <span style={{ marginRight: '1rem' }}>Hola, {user.email}</span>}
-            <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid white', color: 'white', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '5px' }}>
+            {user && <span style={{ marginRight: '1.5rem' }}>Hola, {user.email}</span>}
+
+            {/* ENLACES PARA USUARIO AUTENTICADO */}
+            <Link to="/" style={{ color: 'white', margin: '0 10px', textDecoration: 'underline' }}>Dashboard</Link>
+            <Link to="/history" style={{ color: 'white', margin: '0 10px', textDecoration: 'underline' }}>Historial</Link>
+
+            <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid white', color: 'white', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '5px', marginLeft: '1.5rem' }}>
               Cerrar Sesión
             </button>
           </>
         ) : (
           <>
+            {/* ENLACES PARA VISITANTES */}
             <Link to="/login" style={{ color: 'white', margin: '0 10px' }}>Iniciar Sesión</Link>
             <Link to="/register" style={{ color: 'white', margin: '0 10px' }}>Registrarse</Link>
           </>
