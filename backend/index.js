@@ -1,4 +1,4 @@
-// backend/index.js - VERSIÓN LISTA PARA DESPLIEGUE
+// backend/index.js - VERSIÓN FINAL PARA PRODUCCIÓN
 
 require('dotenv').config({ path: '../.env' });
 
@@ -14,7 +14,18 @@ mongoose.connect(process.env.MONGO_URI)
 
 // --- CONFIGURACIÓN DE APP ---
 const app = express();
-app.use(cors());
+
+// ¡CONFIGURACIÓN DE CORS PARA PRODUCCIÓN!
+const corsOptions = {
+  // Lista de orígenes permitidos
+  origin: [
+    'http://localhost:5173', 
+    'https://autopublicador-ia.vercel.app' // ¡ASEGÚRATE DE QUE ESTA SEA TU URL REAL DE VERCEL!
+  ],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions)); // Usamos la nueva configuración de CORS
 app.use(express.json());
 
 // --- RUTAS DE LA API ---
@@ -26,14 +37,9 @@ app.get('/api/status', (req, res) => {
   res.json({ status: 'ok', message: 'El backend está conectado.' });
 });
 
+
 // --- INICIAR SERVIDOR ---
-
-// ¡CAMBIO CLAVE PARA EL DESPLIEGUE!
-// Render nos dará un puerto en process.env.PORT. 
-// Si no existe (porque estamos en local), usaremos el 3001 como respaldo.
 const PORT = process.env.PORT || 3001; 
-
 app.listen(PORT, () => {
-  // Modificamos el mensaje para que nos diga en qué puerto está corriendo
   console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`); 
 });
