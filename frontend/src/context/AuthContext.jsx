@@ -1,19 +1,30 @@
-// src/context/AuthContext.jsx
+// src/context/AuthContext.jsx - VERSIÓN FINAL LISTA PARA DESPLIEGUE
 
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
+// Hook personalizado
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 const AuthContext = createContext();
 
-// Creamos un cliente de axios con la URL base para no repetirla
-const apiClient = axios.create({
-  baseURL: 'http://localhost:3001/api',
+// =============================================================
+//  CONFIGURACIÓN DINÁMICA DE API CLIENT
+// =============================================================
+// El baseURL ahora es inteligente:
+// En producción (Vercel), usará la variable VITE_API_BASE_URL de tu .env.production.
+// En desarrollo (tu máquina), usará localhost.
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+
+export const apiClient = axios.create({
+  baseURL: baseURL,
 });
 
+// =============================================================
+
+// Componente Proveedor (sin cambios en su lógica interna)
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,7 +34,6 @@ function AuthProvider({ children }) {
     const checkUser = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        // Configuramos el token en los headers de todas las futuras peticiones de apiClient
         apiClient.defaults.headers.common['x-auth-token'] = token;
         try {
           const res = await apiClient.get('/auth/me');
@@ -40,21 +50,21 @@ function AuthProvider({ children }) {
     checkUser();
   }, []);
 
+  const register = async (email, password) => {
+    await apiClient.post('/auth/register', { email, password });
+  };
+
   const login = async (email, password) => {
-    // Esta función ahora hará la llamada a la API
     const res = await apiClient.post('/auth/login', { email, password });
     const token = res.data.token;
     localStorage.setItem('token', token);
-    // Re-configuramos el header para las nuevas peticiones
     apiClient.defaults.headers.common['x-auth-token'] = token;
     
-    // Obtenemos los datos del usuario inmediatamente después del login
     try {
         const userRes = await apiClient.get('/auth/me');
         setUser(userRes.data);
         setIsAuthenticated(true);
     } catch (error) {
-        // Limpiamos en caso de error
         localStorage.removeItem('token');
         setIsAuthenticated(false);
         setUser(null);
@@ -68,7 +78,7 @@ function AuthProvider({ children }) {
     setIsAuthenticated(false);
   };
 
-  const authContextValue = { user, isAuthenticated, isLoading, login, logout };
+  const authContextValue = { user, isAuthenticated, isLoading, login, register, logout };
 
   return (
     <AuthContext.Provider value={authContextValue}>
@@ -77,4 +87,4 @@ function AuthProvider({ children }) {
   );
 }
 
-export { AuthContext, AuthProvider, apiClient };
+export { AuthContext, AuthProvider };
