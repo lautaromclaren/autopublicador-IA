@@ -1,45 +1,42 @@
 // src/components/Header.jsx
 
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext'; // <-- Usamos nuestro nuevo hook
 
 function Header() {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  // Ahora también obtenemos el 'user' y la función 'logout' del contexto
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // Llama a la función logout de nuestro AuthContext
-    navigate('/login'); // Redirige al usuario al login
+    logout(); // Llama a la función logout del contexto
+    navigate('/login'); // Redirige al usuario
   };
 
   return (
     <header style={{ 
         backgroundColor: '#1a1a1a', 
-        padding: '1rem', 
+        padding: '1rem 2rem', 
         color: 'white',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-      {/* Usamos Link para una navegación más rápida sin recargar la página */}
       <Link to="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.5rem' }}>
         <h2>Autopublicador IA</h2>
       </Link>
       
-      <nav>
-        {/* Lógica condicional: ¿está el usuario autenticado? */}
+      <nav style={{ display: 'flex', alignItems: 'center' }}>
         {isAuthenticated ? (
           <>
-            {/* Si SÍ está autenticado, muestra esto */}
-            <Link to="/" style={{ color: 'white', margin: '0 10px' }}>Dashboard</Link>
-            <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1rem' }}>
+            {/* Si el usuario existe, mostramos su email */}
+            {user && <span style={{ marginRight: '1rem' }}>Hola, {user.email}</span>}
+            <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid white', color: 'white', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '5px' }}>
               Cerrar Sesión
             </button>
           </>
         ) : (
           <>
-            {/* Si NO está autenticado, muestra esto */}
             <Link to="/login" style={{ color: 'white', margin: '0 10px' }}>Iniciar Sesión</Link>
             <Link to="/register" style={{ color: 'white', margin: '0 10px' }}>Registrarse</Link>
           </>

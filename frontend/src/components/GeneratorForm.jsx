@@ -1,7 +1,7 @@
 // VERSIÓN CORRECTA Y VERIFICADA - src/components/GeneratorForm.jsx
 
 import { useState } from 'react';
-import axios from 'axios';
+import { apiClient } from '../context/AuthContext';
 import AIResponse from './AIResponse.jsx';
 
 function GeneratorForm() {
@@ -17,7 +17,7 @@ function GeneratorForm() {
     setError('');
 
     try {
-      const result = await axios.post('http://localhost:3001/api/generate', { idea });
+      const result = await apiClient.post('/generations', { idea });
       setVariations(result.data.generatedVariations);
     } catch (error) {
       console.error('Error al enviar la idea:', error);

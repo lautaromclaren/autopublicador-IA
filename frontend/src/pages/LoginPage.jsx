@@ -1,17 +1,15 @@
 // src/pages/LoginPage.jsx
 
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth(); // Obtenemos la nueva y potente función de login
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -19,30 +17,23 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
     setIsLoading(true);
+    setError('');
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', formData);
-
-      // ¡AQUÍ ESTÁ LA MAGIA! Guardamos el token en el almacenamiento local del navegador
-      localStorage.setItem('token', response.data.token);
-
-      // Redirigimos al usuario al dashboard principal
-      navigate('/');
-
+      // Llamamos a la función del contexto, que se encarga de TODO
+      await login(formData.email, formData.password);
+      // Si login() no lanza un error, la autenticación fue exitosa
+      navigate('/'); // Ahora la navegación ocurre después de que el contexto se actualizó
     } catch (err) {
-      if (err.response && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError('Ocurrió un error en el inicio de sesión.');
-      }
+      setError(err.response?.data?.message || 'Error al iniciar sesión.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
+    // ... el JSX del formulario se mantiene exactamente igual ...
     <div style={{ maxWidth: '400px', margin: '5rem auto', padding: '2rem', border: '1px solid #ccc', borderRadius: '8px' }}>
       <h2>Iniciar Sesión</h2>
       <form onSubmit={handleSubmit}>
