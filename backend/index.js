@@ -24,6 +24,7 @@ app.use(express.json());
 // --- RUTAS DE LA API ---
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/generations', require('./routes/generations'));
+app.use('/api/facebook', require('./routes/facebook'));
 
 // Ruta de estado simple
 app.get('/api/status', (req, res) => {

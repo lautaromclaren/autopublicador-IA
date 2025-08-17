@@ -108,5 +108,20 @@ router.get('/facebook/callback', async (req, res) => {
     res.status(500).redirect(`http://localhost:5173/auth/error`);
   }
 });
-
+router.get('/facebook/callback/mock', authMiddleware, async (req, res) => {
+  const userId = req.user.id; 
+  try {
+    let user = await User.findById(userId);
+    if (!user.facebookId) {
+      user.facebookId = `MOCK_${userId}`;
+      user.facebookAccessToken = `MOCK_TOKEN_${userId}`;
+      await user.save();
+      console.log(`Datos de Facebook simulados añadidos al usuario ${userId}`);
+    }
+    res.json({ message: 'Conexión con Facebook simulada exitosamente.' });
+  } catch (error) {
+    console.error('Error en el callback simulado:', error.message);
+    res.status(500).send('Error en el servidor.');
+  }
+});
 module.exports = router;
