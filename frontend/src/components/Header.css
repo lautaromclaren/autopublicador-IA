@@ -1,0 +1,60 @@
+/* src/components/Header.css */
+
+.header {
+  background-color: #1a1a1a;
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.header-nav a, .header-nav button, .header-nav span {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.header-nav button {
+  background: transparent;
+  border: 1px solid white;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* ============================================================= */
+/*          ¡AQUÍ COMIENZA LA MAGIA DEL DISEÑO RESPONSIVO!       */
+/* ============================================================= */
+/* Estos estilos solo se aplican si el ancho de la pantalla es 768px o menos */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Apila los elementos verticalmente */
+    padding: 1rem;
+  }
+
+  .header-title {
+    margin-bottom: 1rem; /* Añade un espacio debajo del título */
+  }
+
+  .header-nav {
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea si no caben */
+    justify-content: center;
+  }
+  
+  .header-nav a, .header-nav button, .header-nav span {
+    margin: 5px; /* Reduce el margen para que quepan mejor */
+  }
+}

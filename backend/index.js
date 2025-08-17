@@ -1,4 +1,4 @@
-// backend/index.js - VERSIÓN FINAL PARA PRODUCCIÓN
+// backend/index.js - VERSIÓN DE DEPURACIÓN DE CORS
 
 require('dotenv').config({ path: '../.env' });
 
@@ -15,17 +15,10 @@ mongoose.connect(process.env.MONGO_URI)
 // --- CONFIGURACIÓN DE APP ---
 const app = express();
 
-// ¡CONFIGURACIÓN DE CORS PARA PRODUCCIÓN!
-const corsOptions = {
-  // Lista de orígenes permitidos
-  origin: [
-    'http://localhost:5173', 
-    'https://autopublicador-ia.vercel.app' // ¡ASEGÚRATE DE QUE ESTA SEA TU URL REAL DE VERCEL!
-  ],
-  optionsSuccessStatus: 200
-};
+// ¡CONFIGURACIÓN DE CORS SIMPLIFICADA PARA LA PRUEBA!
+// Esto permitirá peticiones desde CUALQUIER origen.
+app.use(cors()); 
 
-app.use(cors(corsOptions)); // Usamos la nueva configuración de CORS
 app.use(express.json());
 
 // --- RUTAS DE LA API ---
