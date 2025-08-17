@@ -1,8 +1,9 @@
-// src/pages/HistoryPage.jsx - VERSIÓN CORRECTA Y LIMPIA
+// src/pages/HistoryPage.jsx
 
 import { useState, useEffect } from 'react';
 import { apiClient } from '../context/AuthContext';
-import Header from '../components/Header'; // La ruta correcta para Header es '../components/Header'
+import Header from '../components/Header';
+import '../App.css'; // Importamos los mismos estilos globales
 
 function HistoryPage() {
   const [history, setHistory] = useState([]);
@@ -28,7 +29,7 @@ function HistoryPage() {
   return (
     <div>
       <Header />
-      <main style={{ padding: '2rem' }}>
+      <main className="main-container">
         <h1>Tu Historial de Generaciones</h1>
         
         {isLoading && <p>Cargando historial...</p>}

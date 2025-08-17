@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Importamos el hook
+import { useAuth } from '../context/AuthContext';
+import './AuthPages.css'; // <-- 1. IMPORTAMOS EL MISMO ARCHIVO CSS
 
 function RegisterPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -10,20 +11,16 @@ function RegisterPage() {
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { register } = useAuth(); // Obtenemos la nueva función 'register'
+  const { register } = useAuth();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.id]: e.target.value });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
     setSuccess('');
-
     try {
-      // Llamamos a la función del contexto, que usa la URL correcta de Render
       await register(formData.email, formData.password);
       setSuccess('¡Usuario registrado con éxito! Redirigiendo al login...');
       setTimeout(() => navigate('/login'), 2000);
@@ -35,44 +32,37 @@ function RegisterPage() {
   };
 
   return (
-    // ... el JSX del formulario se mantiene exactamente igual ...
-    <div style={{ maxWidth: '400px', margin: '5rem auto', padding: '2rem', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Crear Cuenta</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
-            required
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
-            required
-            minLength="6"
-          />
-        </div>
-        
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+    // 2. APLICAMOS LAS MISMAS CLASES CSS PARA CONSISTENCIA
+    <div className="auth-container">
+      <div className="auth-form-wrapper">
+        <h2>Crear Cuenta</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email" id="email" value={formData.email}
+              onChange={handleChange} required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña:</label>
+            <input
+              type="password" id="password" value={formData.password}
+              onChange={handleChange} required minLength="6"
+            />
+          </div>
+          
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">{success}</p>}
 
-        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '0.8rem', fontSize: '1rem' }}>
-          {isLoading ? 'Registrando...' : 'Registrarse'}
-        </button>
-      </form>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        ¿Ya tienes una cuenta? <Link to="/login">Inicia Sesión</Link>
-      </p>
+          <button type="submit" disabled={isLoading} className="auth-button">
+            {isLoading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </form>
+        <p className="auth-link">
+          ¿Ya tienes una cuenta? <Link to="/login">Inicia Sesión</Link>
+        </p>
+      </div>
     </div>
   );
 }

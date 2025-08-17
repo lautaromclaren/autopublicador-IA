@@ -1,0 +1,90 @@
+/* src/components/GeneratorForm.css */
+
+.generator-form-container {
+  border: 1px solid #e0e0e0;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.generator-form-container .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.generator-form-container .form-group label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.generator-form-container textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.tone-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Espacio entre botones */
+}
+
+.tone-button {
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px; /* Píldoras */
+  background-color: #f9f9f9;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tone-button:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
+/* Estilo para el botón de tono activo */
+.tone-button.active {
+  background-color: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+
+.generate-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  background-color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.generate-button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.generate-button:hover:not(:disabled) {
+  background-color: #444;
+}
+
+.error-message {
+  color: #d93025;
+  margin-top: 1rem;
+  text-align: center;
+}
