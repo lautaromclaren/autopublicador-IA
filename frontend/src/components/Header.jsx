@@ -2,7 +2,7 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './Header.css'; // <-- 1. IMPORTAMOS NUESTRO NUEVO ARCHIVO CSS
+import './Header.css'; // Importamos el CSS
 
 function Header() {
   const { isAuthenticated, logout, user } = useAuth();
@@ -14,7 +14,6 @@ function Header() {
   };
 
   return (
-    // 2. USAMOS 'className' PARA APLICAR LOS ESTILOS DEL ARCHIVO CSS
     <header className="header">
       <div className="header-title">
         <Link to="/">
@@ -28,6 +27,7 @@ function Header() {
             {user && <span>Hola, {user.email}</span>}
             <Link to="/">Dashboard</Link>
             <Link to="/history">Historial</Link>
+            <Link to="/connections">Conexiones</Link> {/* <-- ¡ENLACE AÑADIDO! */}
             <button onClick={handleLogout}>
               Cerrar Sesión
             </button>
