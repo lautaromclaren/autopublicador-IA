@@ -1,4 +1,4 @@
-// src/pages/ConnectionsPage.jsx - VERSIÓN FINAL CON GESTIÓN DE CONJUNTOS
+// src/pages/ConnectionsPage.jsx - VERSIÓN FINAL CON CRUD COMPLETO
 
 import { useState, useEffect, useCallback } from 'react';
 import Header from '../components/Header';
@@ -49,24 +49,35 @@ function ConnectionsPage() {
 
   const handleCreateSet = async (e) => {
     e.preventDefault();
-    const selectedGroupObjects = Object.keys(selectedGroups)
-      .filter(id => selectedGroups[id])
-      .map(id => groups.find(g => g.id === id));
-
+    const selectedGroupObjects = Object.keys(selectedGroups).filter(id => selectedGroups[id]).map(id => groups.find(g => g.id === id)).filter(Boolean);
     if (!newSetName || selectedGroupObjects.length === 0) {
       setError('Por favor, escribe un nombre y selecciona al menos un grupo.');
       return;
     }
-    
     setIsLoading(true);
     setError('');
     try {
       await apiClient.post('/groupsets', { name: newSetName, groups: selectedGroupObjects });
       setNewSetName('');
       setSelectedGroups({});
-      await fetchGroupSets(); // Recargamos la lista
+      await fetchGroupSets();
     } catch (err) {
       setError(err.response?.data?.message || "Error al crear el conjunto.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteSet = async (setId) => {
+    if (!window.confirm('¿Estás seguro de que quieres borrar esta carpetita? Esta acción no se puede deshacer.')) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await apiClient.delete(`/groupsets/${setId}`);
+      await fetchGroupSets(); // Recargamos la lista
+    } catch (err) {
+      setError('No se pudo borrar el conjunto.');
     } finally {
       setIsLoading(false);
     }
@@ -74,8 +85,9 @@ function ConnectionsPage() {
   
   const selectedCount = Object.values(selectedGroups).filter(Boolean).length;
   
-  // (La función handleMockConnect se puede omitir si ya estás conectado, pero la dejamos por si acaso)
-  const handleMockConnect = async () => { /* ... */ };
+  const handleMockConnect = async () => {
+    // ... (esta función se mantiene igual)
+  };
 
   return (
     <div>
@@ -84,25 +96,26 @@ function ConnectionsPage() {
         <h1>Gestionar Conexiones y Grupos</h1>
         
         {!isFacebookConnected && (
-            <div style={{ /* Estilo para el panel de conexión */ }}>
+            <div style={{ marginTop: '2rem', border: '1px solid #ccc', padding: '2rem', borderRadius: '8px' }}>
                 <h4>-- Solo para Desarrollo --</h4>
                 <p>Usa este botón para simular una conexión exitosa.</p>
                 <button onClick={handleMockConnect}>Simular Conexión</button>
             </div>
         )}
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
+        {message && <p style={{ color: 'green', marginTop: '1rem' }}>{message}</p>}
 
         {isFacebookConnected && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
                 {/* Columna Izquierda: Tus Grupos de FB */}
                 <div>
                     <h4>Tus Grupos de Facebook ({selectedCount} seleccionados)</h4>
-                    <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #eee', padding: '1rem' }}>
+                    <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #eee', padding: '1rem', borderRadius: '8px', background: '#fff' }}>
                         {isLoading && groups.length === 0 ? <p>Cargando grupos...</p> : 
                             groups.map(group => (
-                                <label key={group.id} style={{ display: 'block', padding: '0.5rem' }}>
-                                    <input type="checkbox" checked={selectedGroups[group.id] || false} onChange={() => handleGroupSelect(group.id)} style={{ marginRight: '0.5rem' }} />
+                                <label key={group.id} style={{ display: 'block', padding: '0.8rem', cursor: 'pointer', borderBottom: '1px solid #f0f0f0' }}>
+                                    <input type="checkbox" checked={selectedGroups[group.id] || false} onChange={() => handleGroupSelect(group.id)} style={{ marginRight: '0.8rem' }} />
                                     {group.name}
                                 </label>
                             ))
@@ -113,24 +126,27 @@ function ConnectionsPage() {
                 {/* Columna Derecha: Conjuntos Guardados */}
                 <div>
                     <h4>Conjuntos Guardados ("Carpetitas")</h4>
-                    <div style={{ border: '1px solid #eee', padding: '1rem', minHeight: '200px', marginBottom: '1rem' }}>
-                        {isLoading && groupSets.length === 0 ? <p>Cargando conjuntos...</p> :
-                            groupSets.map(set => (
-                                <div key={set._id} style={{ padding: '0.5rem', borderBottom: '1px solid #f0f0f0' }}>
+                    <div style={{ border: '1px solid #eee', padding: '1rem', minHeight: '265px', marginBottom: '1rem', borderRadius: '8px', background: '#fff' }}>
+                        {isLoading && groupSets.length === 0 ? <p>Cargando conjuntos...</p> : null}
+                        {groupSets.map(set => (
+                            <div key={set._id} style={{ padding: '0.8rem', borderBottom: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span>
                                     <strong>{set.name}</strong> ({set.groups.length} grupos)
-                                    {/* Aquí podríamos añadir botones de editar/borrar en el futuro */}
-                                </div>
-                            ))
-                        }
-                        {groupSets.length === 0 && !isLoading && <p>Aún no has creado ninguna carpetita.</p>}
+                                </span>
+                                <button onClick={() => handleDeleteSet(set._id)} disabled={isLoading} style={{ background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', padding: '0.3rem 0.6rem', cursor: 'pointer' }}>
+                                    Borrar
+                                </button>
+                            </div>
+                        ))}
+                        {groupSets.length === 0 && !isLoading && <p style={{textAlign: 'center', color: '#666'}}>Aún no has creado ninguna carpetita.</p>}
                     </div>
                     <form onSubmit={handleCreateSet}>
                         <input 
                             type="text" value={newSetName} onChange={(e) => setNewSetName(e.target.value)}
-                            placeholder="Nombre de la nueva carpetita" required style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem' }}
+                            placeholder="Nombre de la nueva carpetita" required style={{ width: '100%', padding: '0.8rem', marginBottom: '0.5rem', fontSize: '1rem' }}
                         />
-                        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '0.8rem' }}>
-                            Crear Carpetita con {selectedCount} grupos
+                        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '0.8rem', fontSize: '1rem', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px' }}>
+                            {isLoading ? 'Creando...' : `Crear Carpetita con ${selectedCount} grupos`}
                         </button>
                     </form>
                 </div>
