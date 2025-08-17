@@ -25,6 +25,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/generations', require('./routes/generations'));
 app.use('/api/facebook', require('./routes/facebook'));
+app.use('/api/user', require('./routes/user'));
 
 // Ruta de estado simple
 app.get('/api/status', (req, res) => {
@@ -37,3 +38,5 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`); 
 });
+
+

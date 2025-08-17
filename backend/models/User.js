@@ -4,33 +4,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  registeredAt: {
-    type: Date,
-    default: Date.now
-  },
+  email: { /* ... se mantiene igual ... */ },
+  password: { /* ... se mantiene igual ... */ },
+  registeredAt: { /* ... se mantiene igual ... */ },
+  facebookId: { /* ... se mantiene igual ... */ },
+  facebookAccessToken: { /* ... se mantiene igual ... */ },
 
   // =============================================================
-  //  ¡NUEVOS CAMPOS PARA LA INTEGRACIÓN CON FACEBOOK!
+  //  ¡NUEVO CAMPO PARA GUARDAR LA SELECCIÓN DE GRUPOS!
   // =============================================================
-  facebookId: {
-    type: String, // El ID único que Facebook le asigna a cada usuario
-    unique: true,
-    sparse: true // Permite múltiples documentos con valor 'null', pero únicos si tienen valor
-  },
-  facebookAccessToken: {
-    type: String // El token que nos permitirá hacer peticiones a la API de Facebook
-  }
+  // Guardaremos un array de objetos. Cada objeto tendrá el ID y el nombre del grupo.
+  selectedFacebookGroups: [{
+    id: String,
+    name: String
+  }]
 });
 
 const User = mongoose.model('User', userSchema);
