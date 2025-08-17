@@ -2,8 +2,9 @@
 
 import Header from './components/Header.jsx';
 import GeneratorForm from './components/GeneratorForm.jsx';
+import TargetGroups from './components/TargetGroups.jsx';
 import { useAuth } from './context/AuthContext.jsx';
-import './App.css'; // Importamos los estilos globales
+import './App.css';
 
 function App() {
   const { user } = useAuth();
@@ -16,7 +17,14 @@ function App() {
         <h1>Bienvenido al Panel, {user ? user.email : 'Usuario'}!</h1>
         <p>Desde aquí podrás gestionar y automatizar todo tu contenido.</p>
         
-        <GeneratorForm />
+        <div className="dashboard-layout" style={{ marginTop: '2rem' }}>
+          <div className="generator-column">
+            <GeneratorForm />
+          </div>
+          <div className="groups-column">
+            <TargetGroups />
+          </div>
+        </div>
       </main>
     </div>
   );

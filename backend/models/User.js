@@ -4,20 +4,30 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: { /* ... se mantiene igual ... */ },
-  password: { /* ... se mantiene igual ... */ },
-  registeredAt: { /* ... se mantiene igual ... */ },
-  facebookId: { /* ... se mantiene igual ... */ },
-  facebookAccessToken: { /* ... se mantiene igual ... */ },
-
-  // =============================================================
-  //  ¡NUEVO CAMPO PARA GUARDAR LA SELECCIÓN DE GRUPOS!
-  // =============================================================
-  // Guardaremos un array de objetos. Cada objeto tendrá el ID y el nombre del grupo.
-  selectedFacebookGroups: [{
-    id: String,
-    name: String
-  }]
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  registeredAt: {
+    type: Date,
+    default: Date.now
+  },
+  facebookId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  facebookAccessToken: {
+    type: String
+  }
+  // El campo selectedFacebookGroups ha sido eliminado.
 });
 
 const User = mongoose.model('User', userSchema);

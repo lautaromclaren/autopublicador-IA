@@ -1,0 +1,46 @@
+/* src/components/TargetGroups.css */
+
+.target-groups-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+}
+
+.target-groups-container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8rem;
+}
+
+.groups-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.group-item {
+  padding: 0.8rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.no-groups-message {
+  color: #666;
+  font-style: italic;
+}
+
+.manage-groups-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.manage-groups-link:hover {
+  text-decoration: underline;
+}

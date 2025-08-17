@@ -25,7 +25,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/generations', require('./routes/generations'));
 app.use('/api/facebook', require('./routes/facebook'));
-app.use('/api/user', require('./routes/user'));
+app.use('/api/groupsets', require('./routes/groupSets')); 
 
 // Ruta de estado simple
 app.get('/api/status', (req, res) => {
