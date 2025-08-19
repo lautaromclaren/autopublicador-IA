@@ -11,23 +11,25 @@ function App() {
   const { user } = useAuth();
   const [selectedSet, setSelectedSet] = useState(null);
 
+  // CONSOLE.LOG PARA DEPURACIÓN:
+  // Se ejecutará cada vez que el componente se renderice,
+  // mostrándonos el valor actual de 'selectedSet'.
+  console.log("CONJUNTO SELECCIONADO EN EL DASHBOARD (APP.JSX):", selectedSet);
+
   return (
-    <div>
-      <Header />
-      <main className="main-container">
-        <h1>Bienvenido al Panel, {user ? user.email : 'Usuario'}!</h1>
-        <p>Desde aquí podrás gestionar y automatizar todo tu contenido.</p>
-        
-        <div className="dashboard-layout" style={{ marginTop: '2rem' }}>
-          <div className="generator-column">
-            <GeneratorForm selectedSet={selectedSet} />
-          </div>
-          <div className="groups-column">
-            <TargetGroups onSetSelect={setSelectedSet} />
-          </div>
+    <main className="main-container">
+      <h1>Bienvenido al Panel, {user ? user.email : 'Usuario'}!</h1>
+      <p>Desde aquí podrás gestionar y automatizar todo tu contenido.</p>
+      
+      <div className="dashboard-layout" style={{ marginTop: '2rem' }}>
+        <div className="generator-column">
+          <GeneratorForm selectedSet={selectedSet} />
         </div>
-      </main>
-    </div>
+        <div className="groups-column">
+          <TargetGroups onSetSelect={setSelectedSet} />
+        </div>
+      </div>
+    </main>
   );
 }
 
