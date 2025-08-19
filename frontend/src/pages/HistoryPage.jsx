@@ -1,9 +1,9 @@
 // src/pages/HistoryPage.jsx
 
 import { useState, useEffect } from 'react';
-import { apiClient } from '../context/AuthContext';
 import Header from '../components/Header';
-import '../App.css'; // Importamos los mismos estilos globales
+import { apiClient } from '../context/AuthContext';
+import '../App.css';
 
 function HistoryPage() {
   const [history, setHistory] = useState([]);
@@ -22,7 +22,6 @@ function HistoryPage() {
         setIsLoading(false);
       }
     };
-
     fetchHistory();
   }, []);
 
@@ -41,7 +40,7 @@ function HistoryPage() {
 
         <div style={{ marginTop: '2rem' }}>
           {history.map((item) => (
-            <div key={item._id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1.5rem', marginBottom: '1.5rem' }}>
+            <div key={item._id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1.5rem', marginBottom: '1.5rem', background: '#fff' }}>
               <p style={{ fontSize: '0.9rem', color: '#666' }}>
                 <strong>Fecha:</strong> {new Date(item.createdAt).toLocaleString()}
               </p>

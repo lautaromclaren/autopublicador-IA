@@ -1,0 +1,126 @@
+/* src/pages/LandingPage.css */
+
+.landing-page-container {
+  min-height: 100vh;
+  background: #111; /* Un negro más profundo */
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.landing-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landing-logo h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #aaa;
+}
+
+.nav-button {
+  background-color: #fff;
+  color: #111;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background-color: #eee;
+  transform: translateY(-2px);
+}
+
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.hero-content {
+  max-width: 750px;
+}
+
+.hero-title {
+  font-size: 3.8rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1.5px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 3rem auto;
+  color: #b2b2b2;
+  line-height: 1.7;
+}
+
+.hero-cta .cta-button.primary {
+  background-color: #fff;
+  color: #111;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-cta .cta-button.primary:hover {
+  background-color: #eee;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .landing-header {
+    padding: 1rem;
+  }
+  .landing-nav {
+    gap: 1rem;
+  }
+  .nav-button {
+    padding: 0.5rem 1rem;
+  }
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
