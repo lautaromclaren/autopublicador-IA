@@ -1,0 +1,29 @@
+[33mcd95984[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m feat(modulo): describir brevemente el cambio que hiciste
+[33m67bdb71[m fix(ui): ajustar padding de hero section para header absoluto
+[33m8dc8d1c[m fix(ui): ajustar padding de hero section para header absoluto
+[33m28624a7[m fix(ui): ajustar padding de hero section para header absoluto
+[33mf0e6676[m feat(core): implementar motor de programacion con cron job y ciclo completo de publicacion
+[33mf1e4970[m feat(backend): crear logica del cron job para publicar posts
+[33m158f5ed[m feat(groups): implementar CRUD completo para conjuntos de grupos
+[33ma22f38a[m feat(facebook): implementar obtencion y visualizacion de lista de grupos
+[33m8cf3dfc[m feat(facebook): implementar obtencion y visualizacion de lista de grupos
+[33m2bcf097[m feat(facebook): implementar obtencion y visualizacion de lista de grupos
+[33me7426d1[m feat(auth): implementar flujo inicial y componentes para la conexion con Facebook
+[33m2a997b3[m feat(ai): implementar seleccion de tono dinamico para generacion de contenido
+[33ma3d03be[m debug(backend): simplificar cors para diagnostico
+[33m82c511f[m fix(backend): actualizar cors para produccion en vercel
+[33m445e1d5[m feat(frontend): configurar variables de entorno para despliegue
+[33m283532a[m feat(history): implementar pagina de historial de generaciones por usuario
+[33m69867ea[m feat(history): implementar pagina de historial de generaciones por usuario
+[33m0d6b5f8[m feat(generations): guardar historial de generaciones en la BD por usuario
+[33m75100cf[m feat(auth): implementar rutas protegidas y gestion de estado con Context API
+[33mecdf864[m feat(auth): implementar rutas protegidas y gestion de estado con Context API
+[33m88ab6df[m feat(auth): implementar UI y logica para registro y login de usuarios
+[33mb7be80b[m refactor(backend): implementar variables de entorno con dotenv
+[33mc6678c0[m feat(ai): implementar generacion de multiples variaciones de texto
+[33mee0524f[m feat(core): ¡INTEGRACIÓN CON IA COMPLETA Y FUNCIONAL!
+[33m3bfb23f[m feat(frontend): configurar estructura inicial y crear componente Header
+[33m93c3713[m chore(git): Eliminar node_modules del seguimiento de Git
+[33m142fd10[m feat(backend): configurar servidor inicial con Express
+[33m89fb244[m feat: agregar package.json para manejar dependencias
+[33m8a93ff7[m Primer commit: agregar README
